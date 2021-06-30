@@ -118,11 +118,11 @@ def register(request):
                     elif username_exit.count() > 0: # 验证用户名
                         errormsg = _('用户名已被使用！')
                         return render(request, 'register.html', locals())
-                    elif re.match('^[0-9a-z]+$',username) is None:
+                    elif re.match('^[0-9a-zA-Z]+$',username) is None:
                         errormsg = _('用户名只能为英文数字组合')
                         return render(request, 'register.html', locals())
-                    elif len(username) < 5:
-                        errormsg = _('用户名必须大于等于5位！')
+                    elif len(username) < 3:
+                        errormsg = _('用户名必须大于等于3位！')
                         return render(request, 'register.html', locals())
                     elif len(password) < 6: # 验证密码长度
                         errormsg = _('密码必须大于等于6位！')
@@ -318,10 +318,10 @@ class AdminUserList(APIView):
         password = request.data.get('password', '')  # 接收密码参数
         user_type = request.data.get('user_type', 0)  # 用户类型 0为普通用户，1位管理员
         # 用户名只能为英文小写或数字且大于等于5位，密码大于等于6位
-        if len(username) >= 5 and \
+        if len(username) >= 3 and \
                 len(password) >= 6 and \
                 '@' in email and \
-                re.match(r'^[0-9a-z]', username):
+                re.match(r'^[0-9a-zA-Z]',username):
             # 不允许电子邮箱重复
             if User.objects.filter(email=email).count() > 0:
                 return JsonResponse({'status': False, 'data': _('电子邮箱不可重复')})
