@@ -80,6 +80,8 @@ class Doc(models.Model):
     editor_mode = models.IntegerField(default=1,verbose_name='编辑器模式')
     open_children = models.BooleanField(default=False,verbose_name="展开下级目录")
     show_children = models.BooleanField(verbose_name="显示下级文档",default=False)
+    #文章阅读量
+    views = models.PositiveIntegerField(verbose_name="文章阅读量",default=0)
 
     def __str__(self):
         return self.name
@@ -100,6 +102,10 @@ class Doc(models.Model):
                            "pro_id": str(self.top_doc),
                            "doc_id":self.pk}
                        )
+    ## 浏览量递增
+    def increase_views(self):
+        self.views += 1
+        self.save(update_fields=['views'])
 
 
 # 文档历史模型

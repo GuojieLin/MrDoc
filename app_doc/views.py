@@ -1015,6 +1015,9 @@ def doc(request,pro_id,doc_id):
                 is_share = False
             # 获取文集下一级文档
             # project_docs = Doc.objects.filter(top_doc=doc.top_doc, parent_doc=0, status=1).order_by('sort')
+            # 浏览量+1
+            Doc.increase_views(doc)
+
             return render(request,'app_doc/doc.html',locals())
         else:
             return HttpResponse(_('参数错误'))
