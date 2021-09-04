@@ -257,7 +257,7 @@
             }
             // 获取文档状态
             if(status == undefined){
-                var status = '{{doc.status}}'
+                var status = {{doc.status}}
             }else{
                 var status = status;
             }
@@ -284,18 +284,26 @@
                     if(r.status){
                         //修改成功
                         window.localStorage.removeItem('mrdoc_doc_cache') // 清空文档缓存
+                        //已发布的文档编辑和草稿编辑is_save传的都是null
                         if(is_save == undefined){
                             layer.msg('保存成功',{time:1000},function(){
                                 md_changed = false;
-                                $('button.layui-btn').attr("disabled",false);
-                                $('button.layui-btn').removeClass('layui-btn-disabled');
+                                if(status === 1){
+                                    //已发布的保存直接跳转
+                                    window.location.href = "{% url 'doc' pro_id=doc.top_doc doc_id=doc.id %}";
+                                }
+                                else{
+                                    //草稿保存留在原页面
+                                    $('button.layui-btn').attr("disabled",false);
+                                    $('button.layui-btn').removeClass('layui-btn-disabled');
+                                }
                             });
                         }
                         else if(status === 1){
                             layer.msg('发布成功',function(){
                                 md_changed = false;
-                                location.reload()
-                                // window.location.href = "{% url 'doc' pro_id=doc.top_doc doc_id=doc.id %}";
+                                //location.reload()
+                                window.location.href = "{% url 'doc' pro_id=doc.top_doc doc_id=doc.id %}";
                             });
                         }else{
                             layer.msg('保存成功',{time:1000},function(){
