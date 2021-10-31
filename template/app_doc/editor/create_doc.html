@@ -320,7 +320,9 @@
                                 layer.msg('发布成功',{time:1000},function(){
                                     md_changed = false;
                                     //跳转到文档修改
-                                    window.location.href = "/modify_doc/"+r.data.doc+"/";
+                                    //'data': {'pro': project, 'doc': doc.id}})
+                                    window.location.href = "/project-"+r.data.pro+"/doc-"+r.data.doc;
+                                    //window.location.href = "/modify_doc/"+r.data.doc+"/";
                                 });
                             }else{
                                 layer.msg('保存成功',{time:1000},function(){
